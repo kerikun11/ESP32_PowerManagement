@@ -14,15 +14,14 @@
 class PowerManagement {
 public:
   static void init(const bool light_sleep_enable = true) {
-    rtc_cpu_freq_t max_freq;
-    rtc_clk_cpu_freq_from_mhz(CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ, &max_freq);
-    static esp_pm_config_esp32_t pm_config = {
-      .max_cpu_freq = max_freq,
-      .min_cpu_freq = RTC_CPU_FREQ_XTAL,
+    esp_pm_config_esp32_t pm_config;
+    pm_config.max_freq_mhz = CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ;
+    pm_config.min_freq_mhz = 10;
 #if CONFIG_FREERTOS_USE_TICKLESS_IDLE
-      .light_sleep_enable = light_sleep_enable,
+    pm_config.light_sleep_enable = light_sleep_enable;
+#else
+    pm_config.light_sleep_enable = false;
 #endif
-    };
     ESP_ERROR_CHECK(esp_pm_configure(&pm_config));
   }
   static void printLockStatus(FILE *stream = stdout) {
