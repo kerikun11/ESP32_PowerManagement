@@ -1,0 +1,10 @@
+{
+    "name": "ESP32 Power Management C++ Wrapper",
+    "description": "ESP32 Power Management C++ Wrapper",
+    "keywords": "esp32,power_management",
+    "build": {
+        "flags": [
+            "-I include"
+        ]
+    }
+}
